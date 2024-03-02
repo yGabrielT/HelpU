@@ -41,7 +41,7 @@ public class Pebble : MonoBehaviour, IInterectable
 
     public void TriggerRedo()
     {
-        Invoke(nameof(RedoCollider),.5f);
+        Invoke(nameof(RedoCollider),1f);
     }
     public void RedoCollider()
     {

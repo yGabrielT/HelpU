@@ -95,7 +95,7 @@ namespace Player
             HandleNoise();
             if(lastPebble != null)
             {
-                if (isHanging && !_isInPeeble)
+                if (isHanging)
                 {
                     _isInPeeble = true;
                     lastPebble.GetComponent<Pebble>()._collider.enabled = false;
@@ -117,13 +117,13 @@ namespace Player
             if(_rawMoveVector != Vector2.zero && !_isHolding && !isHanging)
             {
                 _actualAmplitude = Mathf.Lerp(_actualAmplitude, _walkNoiseAmplitude, Time.deltaTime * _smoothLerpNoiseValue);
-                _actualFrequency = Mathf.Lerp(_actualFrequency, _walkNoiseAmplitude, Time.deltaTime * _smoothLerpNoiseValue);
+                _actualFrequency = Mathf.Lerp(_actualFrequency, _walkNoiseFrequency, Time.deltaTime * _smoothLerpNoiseValue);
             }
             //idle
             else if ((_rawMoveVector == Vector2.zero || !_char.isGrounded) && !isHanging)
             {
                 _actualAmplitude = Mathf.Lerp(_actualAmplitude, _idleNoiseAmplitude, Time.deltaTime * _smoothLerpNoiseValue);
-                _actualFrequency = Mathf.Lerp(_actualFrequency, _idleNoiseAmplitude, Time.deltaTime * _smoothLerpNoiseValue);
+                _actualFrequency = Mathf.Lerp(_actualFrequency, _idleNoiseFrequency, Time.deltaTime * _smoothLerpNoiseValue);
             }
             //Hanging
             if (isHanging)
@@ -261,6 +261,7 @@ namespace Player
 
                         interactableObj.wasInteracted = true;
                         interactableObj.Response();
+                        lastPebble = hit.transform.gameObject;
 
                     }
 
