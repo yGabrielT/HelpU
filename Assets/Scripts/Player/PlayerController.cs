@@ -12,35 +12,35 @@ namespace Player
         [SerializeField] private GameObject _cam;
         [SerializeField] private GameObject _interactUI;
         [SerializeField] private float _sensivity;
-        [SerializeField] private float _zRotateControl = 4f;
-        [SerializeField] private float _zRotateSmooth = 10f;
+        [SerializeField] private float _zRotateControl;
+        [SerializeField] private float _zRotateSmooth;
         [SerializeField] private float _smoothLerpMouseValue;
         [SerializeField] private float _topClampValue;
         [SerializeField] private float _bottomClampValue;
-        [SerializeField] private bool _isCursorLocked = true;
+        [SerializeField] private bool _isCursorLocked;
 
         [Header("Noise values")]
-        [SerializeField] private float _walkNoiseFrequency = 1f;
-        [SerializeField] private float _walkNoiseAmplitude = 1f;
-        [SerializeField] private float _idleNoiseFrequency = 0.3f;
-        [SerializeField] private float _idleNoiseAmplitude = 0.3f;
-        [SerializeField] private float _smoothLerpNoiseValue = 30f;
+        [SerializeField] private float _walkNoiseFrequency;
+        [SerializeField] private float _walkNoiseAmplitude;
+        [SerializeField] private float _idleNoiseFrequency;
+        [SerializeField] private float _idleNoiseAmplitude;
+        [SerializeField] private float _smoothLerpNoiseValue;
 
         [Header("Player Settings")]
         [SerializeField] private float _speed;
-        [SerializeField] private float _smoothLerpMoveValue = 400f;
-        [SerializeField] private float _gravity = -10f;
-        [SerializeField] private float _interactRange = 20f;
-        [SerializeField] private float _wallRange = 2f;
+        [SerializeField] private float _smoothLerpMoveValue;
+        [SerializeField] private float _gravity;
+        [SerializeField] private float _interactRange;
+        [SerializeField] private float _wallRange;
         [SerializeField] private LayerMask _layerToIgnoreRaycast;
         [SerializeField] private LayerMask _layerToWall;
-        [SerializeField] private float _jumpPower = 4f;
-        [SerializeField] private float _jumpMaxTime = 2f;
+        [SerializeField] private float _jumpPower;
+        [SerializeField] private float _jumpMaxTime;
         [SerializeField] private float _speedMidAir;
-        [SerializeField] private float _yInverseSpeed = .4f;
+        [SerializeField] private float _yInverseSpeed;
         [SerializeField] private float _maxYSpeed;
         [SerializeField] private float _minYSpeed;
-
+        [SerializeField] private float _maxStamina;
 
         [HideInInspector] public bool isHanging;
         [HideInInspector] public PlayerInputManager playerInput;
@@ -57,20 +57,25 @@ namespace Player
         private CharacterController _char;
         private float _jumpValue;
         private float _verticalSpeed;
-        private float _startYCam;
         private bool _isHolding;
         private float _rotateZ;
         private CinemachineVirtualCamera _vCam;
         private float _actualFrequency;
         private float _actualAmplitude;
-        private GameObject lastPebble;
-        private bool _isInPeeble;
-        
+        private float _stamina;
+        [HideInInspector] public bool canClimb;
+        private bool _canRestoreStamina;
+        private float _groundTimer;
+        private bool _isGroundTimerDone;
+
+
 
         void Start()
         {
+            
+            _stamina = _maxStamina;
+            canClimb = true;
             _vCam = _cam.GetComponentInChildren<CinemachineVirtualCamera>();
-            _startYCam = _cam.transform.localPosition.y;
             if (_isCursorLocked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -93,23 +98,53 @@ namespace Player
             }
             Slope();
             HandleNoise();
-            if(lastPebble != null)
-            {
-                if (isHanging)
-                {
-                    _isInPeeble = true;
-                    lastPebble.GetComponent<Pebble>()._collider.enabled = false;
-                }
-                else if (_isInPeeble && _isInAir)
-                {
-                    lastPebble.GetComponent<Pebble>().TriggerRedo();
-                    _isInPeeble = false;
-                    
-                    
-                }
-            }
+            Stamina();
+            
         }
 
+        void Stamina()
+        {
+            
+            if (isHanging)
+            {
+                _stamina -= Time.deltaTime;
+                _canRestoreStamina = false;
+            }
+            else
+            {
+                _canRestoreStamina = true;
+            }
+            if(_stamina <= 0f)
+            {
+                isHanging = false;
+                canClimb = false;
+                
+            }
+            if(_char.isGrounded && _canRestoreStamina && !_isGroundTimerDone)
+            {
+                _groundTimer += Time.deltaTime;
+                if(_groundTimer > 1.5f)
+                {
+                    _isGroundTimerDone = true;
+                }
+            }
+            if(_stamina < _maxStamina)
+            {
+                if (_canRestoreStamina && _groundTimer > 1.5f && _isGroundTimerDone)
+                {
+                    _stamina += Time.deltaTime;
+                }
+            }
+            else
+            {
+                _groundTimer = 0f;
+                _isGroundTimerDone = false;
+                _canRestoreStamina = false;
+                canClimb = true;
+            }
+            
+            
+        }
         void HandleNoise()
         {
 
@@ -261,7 +296,7 @@ namespace Player
 
                         interactableObj.wasInteracted = true;
                         interactableObj.Response();
-                        lastPebble = hit.transform.gameObject;
+                       
 
                     }
 
@@ -290,7 +325,7 @@ namespace Player
                 var collider = sphereHit.collider;
                 var angle = Vector3.Angle(Vector3.up, sphereHit.normal);
                 Debug.DrawLine(sphereHit.point,sphereHit.point + sphereHit.normal, Color.blue,3f);
-                Debug.Log(angle);
+                
                 if (angle > _char.slopeLimit)
                 {
                     var normal = sphereHit.normal;
@@ -305,14 +340,6 @@ namespace Player
         }
 
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if(other.gameObject.TryGetComponent<Pebble>(out Pebble PebbleObj))
-            {
-                lastPebble = other.gameObject;
-                
-            }
-        }
 
 
     }
