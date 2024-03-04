@@ -40,9 +40,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorResolution: 300
-    - _Color_Threshold: 0.18
+    - _Color_Threshold: 0.1
     - _DitherSpread: 0.05
-    - _Normal_Threshold: 0.001
+    - _Normal_Threshold: 0.1
     - _OVERLAY: 1
     - _Outline_Color: 0.34
     m_Colors:

@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using PlayerInputManager = Player.Input.PlayerInputManager;
+using UnityEngine.UI;
 namespace Player
 {
     public class PlayerController : MonoBehaviour
@@ -40,10 +41,13 @@ namespace Player
         [SerializeField] private float _yInverseSpeed;
         [SerializeField] private float _maxYSpeed;
         [SerializeField] private float _minYSpeed;
-        [SerializeField] private float _maxStamina;
-
+        [SerializeField] public float _maxStamina;
+        [SerializeField] public float _maxGroundTimer;
+        [SerializeField] float _maxCheckTimer = 10;
+        [SerializeField] Image _panelImage;
         [HideInInspector] public bool isHanging;
         [HideInInspector] public PlayerInputManager playerInput;
+        public bool canMove = true;
 
         private Vector2 _rawMouseVector;
         private Vector2 _smoothMouseVector;
@@ -62,17 +66,21 @@ namespace Player
         private CinemachineVirtualCamera _vCam;
         private float _actualFrequency;
         private float _actualAmplitude;
-        private float _stamina;
+        [HideInInspector] public float _stamina;
         [HideInInspector] public bool canClimb;
         private bool _canRestoreStamina;
-        private float _groundTimer;
+        public float _groundTimer;
         private bool _isGroundTimerDone;
-
+        private bool isSliding;
+        private Vector3 _lastCheckPoint;
+        bool canCheckPoint = true;
+        private float timerChecker;
 
 
         void Start()
         {
-            
+            canMove = true;
+            canCheckPoint = true;
             _stamina = _maxStamina;
             canClimb = true;
             _vCam = _cam.GetComponentInChildren<CinemachineVirtualCamera>();
@@ -89,6 +97,8 @@ namespace Player
 
         void Update()
         {
+            HandleCheckpoint();
+            
             Rotate();
             Interact();
             HandleJump();
@@ -99,6 +109,7 @@ namespace Player
             Slope();
             HandleNoise();
             Stamina();
+
             
         }
 
@@ -120,19 +131,24 @@ namespace Player
                 canClimb = false;
                 
             }
-            if(_char.isGrounded && _canRestoreStamina && !_isGroundTimerDone)
+            
+
+            if (_char.isGrounded && _canRestoreStamina && !_isGroundTimerDone && !isSliding)
             {
                 _groundTimer += Time.deltaTime;
-                if(_groundTimer > 1.5f)
+                if (_groundTimer > _maxGroundTimer)
                 {
                     _isGroundTimerDone = true;
                 }
             }
+            
+            
+            
             if(_stamina < _maxStamina)
             {
-                if (_canRestoreStamina && _groundTimer > 1.5f && _isGroundTimerDone)
+                if (_canRestoreStamina && _groundTimer > _maxGroundTimer && _isGroundTimerDone)
                 {
-                    _stamina += Time.deltaTime;
+                    _stamina += Time.deltaTime * (_maxStamina/2);
                 }
             }
             else
@@ -328,18 +344,61 @@ namespace Player
                 
                 if (angle > _char.slopeLimit)
                 {
+                    isSliding = true;
                     var normal = sphereHit.normal;
                     var yInverse = _yInverseSpeed - normal.y;
 
                     _rawMoveVector.x += yInverse * normal.x;
                     _rawMoveVector.y += yInverse * normal.z;
                 }
+                else
+                {
+                    isSliding = false;
+                }
 
             }
 
         }
 
+        public void StoreCheckpoint(Transform local)
+        {
+            _lastCheckPoint = local.position;
+        }
 
+        public void HandleCheckpoint()
+        {
+            
+            if (timerChecker > 0)
+            {
+                timerChecker -= Time.deltaTime;
+                
+            }
+            else
+            {
+                canCheckPoint = true;
+            }
+
+            if ( _lastCheckPoint != null && canCheckPoint && playerInput.restart)
+            {
+                timerChecker = _maxCheckTimer;
+                canCheckPoint = false;
+                playerInput.restart = false;
+                
+                _panelImage.DOFade(1f, .5f).SetEase(Ease.InOutCirc).OnComplete(()=> 
+                {
+                    _char.enabled = false;
+                    transform.position = _lastCheckPoint;
+                    _char.enabled = true;
+                    _panelImage.DOFade(0f, .5f).SetEase(Ease.InOutCirc);
+                }
+                );
+                
+                
+                
+                
+                
+            }
+        }
 
 
     }

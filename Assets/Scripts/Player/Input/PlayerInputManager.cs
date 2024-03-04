@@ -7,13 +7,14 @@ namespace Player.Input
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        private PlayerInputAction _playerActions;
+        public PlayerInputAction _playerActions;
 
         public bool leftClick;
         public Vector2 mouseDelta;
         public Vector2 movement;
         public bool jump;
         public bool jumpCancel;
+        public bool restart;
         void Awake()
         {
             _playerActions = new PlayerInputAction();
@@ -23,6 +24,8 @@ namespace Player.Input
             _playerActions.Player.LeftClick.performed += LeftClick;
             _playerActions.Player.Jump.started += StartJump;
             _playerActions.Player.Jump.canceled += CancelJump;
+            _playerActions.Player.Restart.performed += Restart;
+            _playerActions.Player.Restart.canceled += CancelRestart;
         }
 
     
@@ -44,6 +47,15 @@ namespace Player.Input
         void LeftClick(InputAction.CallbackContext context)
         {
             leftClick = true;
+        }
+        void Restart(InputAction.CallbackContext context)
+        {
+            restart = true;
+        }
+
+        void CancelRestart(InputAction.CallbackContext context)
+        {
+            restart = false;
         }
 
         void StartJump(InputAction.CallbackContext context)
