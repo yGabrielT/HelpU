@@ -214,8 +214,16 @@ namespace Player
             Vector3 relativeInputY = playerInput.movement.y * forward;
 
 
-             
-            _relativeMoveVector = relativeInputY + relativeInputX;
+            if (!isSliding)
+            {
+                _relativeMoveVector = relativeInputY + relativeInputX;
+            }
+            else
+            {
+                _relativeMoveVector = Vector3.zero;
+            }
+                
+
 
             if (_char.isGrounded)
             {
@@ -249,7 +257,7 @@ namespace Player
         void HandleJump()
         {
             
-            if (isHanging || _char.isGrounded)
+            if (isHanging || (_char.isGrounded && !isSliding))
             {
                 if (playerInput.jump && _jumpTime < _jumpMaxTime && !_isInAir)
                 {
