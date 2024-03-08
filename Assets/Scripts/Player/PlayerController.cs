@@ -120,6 +120,8 @@ namespace Player
             {
                 _stamina -= Time.deltaTime;
                 _canRestoreStamina = false;
+                _smoothMoveVector = Vector2.zero;
+                _finalMoveVector = Vector2.zero;
             }
             else
             {
@@ -220,7 +222,7 @@ namespace Player
             }
             else
             {
-                _relativeMoveVector = Vector3.zero;
+                _relativeMoveVector = (relativeInputY + relativeInputX)/2;
             }
                 
 

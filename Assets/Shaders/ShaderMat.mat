@@ -40,11 +40,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorResolution: 300
-    - _Color_Threshold: 0.1
+    - _Color_Threshold: 2.6
     - _DitherSpread: 0.05
-    - _Normal_Threshold: 1
+    - _Normal_Threshold: 0.8
     - _OVERLAY: 1
     - _Outline_Color: 0.34
     m_Colors:
-    - _Outline_Color: {r: 0, g: 0.027044, b: 0.4056604, a: 1}
+    - _Outline_Color: {r: 0, g: 0.016907573, b: 0.21698111, a: 1}
   m_BuildTextureStacks: []
