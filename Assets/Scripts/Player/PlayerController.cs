@@ -1,10 +1,12 @@
 using Player.Input;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using PlayerInputManager = Player.Input.PlayerInputManager;
 using UnityEngine.UI;
+using TMPro;
 namespace Player
 {
     public class PlayerController : MonoBehaviour
@@ -75,6 +77,13 @@ namespace Player
         private Vector3 _lastCheckPoint;
         bool canCheckPoint = true;
         private float timerChecker;
+        [SerializeField] private TextMeshProUGUI _checkpointText;
+        [SerializeField]
+        private AudioClip _footStepClip;
+        [SerializeField]
+        private float _stepDelay = .2f;
+        private float _stepTimer;
+
 
 
         void Start()
@@ -109,8 +118,25 @@ namespace Player
             Slope();
             HandleNoise();
             Stamina();
-
+            ChooseRandomFootStep();
             
+        }
+        void ChooseRandomFootStep()
+        {
+            if(_char.isGrounded && _rawMoveVector != Vector2.zero && !isHanging)
+            {
+                if(_stepTimer > 0)
+                {
+                    _stepTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    _stepTimer = _stepDelay;
+                    
+                    AudioManager.instance.PlayOneShotAtPosRandPitch(_footStepClip, this.transform,0.1f,1.5f);
+
+                }
+            }
         }
 
         void Stamina()
@@ -373,6 +399,9 @@ namespace Player
         public void StoreCheckpoint(Transform local)
         {
             _lastCheckPoint = local.position;
+            _checkpointText.rectTransform.anchoredPosition = new Vector2(0, -50f);
+            _checkpointText.rectTransform.DOAnchorPos(new Vector2(0, 100f), 2f).SetEase(Ease.OutExpo);
+            _checkpointText.DOFade(.5f, .4f).OnComplete(() => _checkpointText.DOFade(0f, .4f).SetDelay(1.2f));
         }
 
         public void HandleCheckpoint()
