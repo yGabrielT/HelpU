@@ -124,9 +124,9 @@ public class PauseUI : MonoBehaviour
         AudioManager.instance._ambientVol = _ambientVolSlide.value / 100;
         _playerController.sensivity = _mouseSensSlide.value;
 
-        _mouseSensText.text = _mouseSensSlide.value.ToString();
-        _masterVolText.text = _masterVolSlide.value.ToString();
-        _sfxVolText.text = _sfxVolSlide.value.ToString();
-        _ambientVolText.text = _ambientVolSlide.value.ToString();
+        _mouseSensText.text = _mouseSensSlide.value.ToString("0.##");
+        _masterVolText.text = _masterVolSlide.value.ToString("0");
+        _sfxVolText.text = _sfxVolSlide.value.ToString("0");
+        _ambientVolText.text = _ambientVolSlide.value.ToString("0");
     }
 }

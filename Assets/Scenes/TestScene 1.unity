@@ -17050,7 +17050,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 100
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18459,8 +18459,8 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 100
-  m_WholeNumbers: 0
-  m_Value: 50
+  m_WholeNumbers: 1
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -28173,10 +28173,10 @@ MonoBehaviour:
   _masterVolSlide: {fileID: 1011838056}
   _sfxVolSlide: {fileID: 2121912520}
   _ambientVolSlide: {fileID: 1070012954}
-  _mouseSensText: {fileID: 1053663824}
-  _masterVolText: {fileID: 89486554}
-  _sfxVolText: {fileID: 940571379}
-  _ambientVolText: {fileID: 712546162}
+  _mouseSensText: {fileID: 764189647}
+  _masterVolText: {fileID: 1894646026}
+  _sfxVolText: {fileID: 859710962}
+  _ambientVolText: {fileID: 888729418}
 --- !u!4 &1782262411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2305116452670484106, guid: 9b54481b26795c14cbb44b804b47ea5d,
@@ -32909,8 +32909,8 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 100
-  m_WholeNumbers: 0
-  m_Value: 50
+  m_WholeNumbers: 1
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
