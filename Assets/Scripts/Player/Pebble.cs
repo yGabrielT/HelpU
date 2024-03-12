@@ -12,12 +12,18 @@ public class Pebble : MonoBehaviour, IInterectable
     [SerializeField] private Transform _whereToMove;
     public void Response()
     {
-        wasInteracted = false;
-        if (_playerController.canClimb)
+        
+        if (_playerController.canClimb && wasInteracted)
         {
             _playerController.isHanging = true;
-            _playerController.transform.DOMove(_whereToMove.position, .4f).SetEase(Ease.OutCirc);
+            _playerController.transform.DOMove(_whereToMove.position, .4f).SetEase(Ease.OutCirc)
+                .OnComplete(() =>
+                {
+                    AudioManager.instance.PlayOneShotAtPosRandPitch(_playerController.grabPeebleSound, transform, .6f, 1.3f);
+                    Instantiate(_playerController.smokeParticle.gameObject, transform.position , Quaternion.identity);
+                });
         }
+        wasInteracted = false;
     }
 
     // Start is called before the first frame update

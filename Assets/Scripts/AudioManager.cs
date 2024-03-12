@@ -12,13 +12,12 @@ public class AudioManager : MonoBehaviour
     private AudioSource _aud2;
     [SerializeField]
     private AudioSource _audFoot;
-    [SerializeField]
-    private AudioSource _ambientAud;
     
-    public bool isAmbientAudEnabled = false;
-    public float _ambientVol = 100;
-    public float _sfxVol =100;
-    public float _masterVol = 100;
+    
+    
+    public float _ambientVol = 1;
+    public float _sfxVol = 1;
+    public float _masterVol = 1;
     [SerializeField]
     private AudioMixer _audMix;
     
@@ -42,36 +41,33 @@ public class AudioManager : MonoBehaviour
     {
         SetValues();
 
-        if (isAmbientAudEnabled)
-        {
-            _ambientVol = 100;
-        }
-        else
-        {
-            _ambientVol = 0.001f;
-        }
+        
         
         
     }
     
     void SetValues()
     {
-
+        _ambientVol = Mathf.Clamp(_ambientVol, 0.001f, 1f);
+        _sfxVol = Mathf.Clamp(_sfxVol, 0.001f, 1f);
+        _masterVol = Mathf.Clamp(_masterVol, 0.001f, 1f);
 
         _audMix.SetFloat("ambientVol", Mathf.Log(_ambientVol) * 20);
         _audMix.SetFloat("sfxVol", Mathf.Log(_sfxVol) * 20);
         _audMix.SetFloat("masterVol", Mathf.Log(_masterVol) * 20);
     }
-    public void PlayOneShotAtPos1(AudioClip audioClip, Transform audTransform)
+    public void PlayOneShotAtPos1(AudioClip audioClip, Transform audTransform, float pitch)
     {
         _aud1.clip = audioClip;
+        _aud1.pitch = pitch;
         _aud1.gameObject.transform.position = audTransform.position;
         _aud1.Play();
     }
 
-    public void PlayOneShotAtPos2(AudioClip audioClip, Transform audTransform)
+    public void PlayOneShotAtPos2(AudioClip audioClip, Transform audTransform, float pitch)
     {
         _aud2.clip = audioClip;
+        _aud2.pitch = pitch;
         _aud2.gameObject.transform.position = audTransform.position;
         _aud2.Play();
     }

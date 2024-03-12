@@ -83,7 +83,9 @@ namespace Player
         [SerializeField]
         private float _stepDelay = .2f;
         private float _stepTimer;
-
+        public AudioClip grabPeebleSound;
+        private bool wasOnAir;
+        public GameObject smokeParticle;
 
 
         void Start()
@@ -120,7 +122,10 @@ namespace Player
             Stamina();
             ChooseRandomFootStep();
             
+            
         }
+
+        
         void ChooseRandomFootStep()
         {
             if(_char.isGrounded && _rawMoveVector != Vector2.zero && !isHanging)
@@ -271,8 +276,11 @@ namespace Player
 
 
             _verticalSpeed += _gravity * Time.deltaTime;
-            if(_verticalSpeed  < 0 && _char.isGrounded) _verticalSpeed = 0;
-
+            if (_verticalSpeed < 0 && _char.isGrounded)
+            {
+                _verticalSpeed = 0;
+                
+            }
             _verticalSpeed = Mathf.Clamp(_verticalSpeed, _minYSpeed, _maxYSpeed);
             _finalMoveVector = new Vector3(_smoothMoveVector.x, _verticalSpeed, _smoothMoveVector.y);
             
@@ -291,7 +299,7 @@ namespace Player
                 {
                     _isHolding = true;
                     _jumpTime += Time.deltaTime;
-                    _cam.transform.localPosition = Vector3.Lerp(_cam.transform.localPosition, new Vector3(_cam.transform.localPosition.x, .5f, _cam.transform.localPosition.z), Time.deltaTime * 10);;
+                    _cam.transform.localPosition = Vector3.Lerp(_cam.transform.localPosition, new Vector3(_cam.transform.localPosition.x, .5f, _cam.transform.localPosition.z), Time.deltaTime * 10);
                 }
             }
             if (playerInput.jumpCancel && _isHolding)
@@ -325,6 +333,7 @@ namespace Player
                 _jumpValue = 0;
                 _jumpTime = 0;
                 _isInAir = false;
+                AudioManager.instance.PlayOneShotAtPos1(_footStepClip, transform, 0.1f);
             }
             
             
@@ -339,7 +348,7 @@ namespace Player
             {
                 if (hit.collider.transform.gameObject.TryGetComponent<IInterectable>(out IInterectable interactableObj) && !interactableObj.wasInteracted)
                 {
-                    Debug.Log("Looking at interectable");
+                    
                     _interactUI.SetActive(true);
 
                     if (playerInput.leftClick)
@@ -374,6 +383,7 @@ namespace Player
 
             if (Physics.SphereCast(castOrigin, _char.radius - 0.01f, Vector3.down , out var sphereHit, .06f, ~LayerMask.GetMask("Player"),QueryTriggerInteraction.Ignore))
             {
+                
                 var collider = sphereHit.collider;
                 var angle = Vector3.Angle(Vector3.up, sphereHit.normal);
                 Debug.DrawLine(sphereHit.point,sphereHit.point + sphereHit.normal, Color.blue,3f);
@@ -393,6 +403,7 @@ namespace Player
                 }
 
             }
+            
 
         }
 
