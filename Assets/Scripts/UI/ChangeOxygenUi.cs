@@ -9,21 +9,21 @@ public class ChangeOxygenUi : MonoBehaviour
     public Image OxygenGraphicUI;
     public RectTransform OxygenGraphicHolderUI;
     public float oxygenTimerDivider = 2f;
-    private float oxygenAmount;
-    private bool losingOxygen;
+    [HideInInspector]public float oxygenAmount;
+    public bool isLosingOxygen;
     private bool hasLostHalf;
 
     void Start()
     {
 
-        losingOxygen = true;
+        
         oxygenAmount = 100f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(losingOxygen && oxygenAmount >= 0)
+        if(isLosingOxygen && oxygenAmount >= 0)
         {
             oxygenAmount -= Time.deltaTime / oxygenTimerDivider;
             OxygenGraphicUI.fillAmount = ChangeStaminaUI.remap(oxygenAmount,0,100,0,1);

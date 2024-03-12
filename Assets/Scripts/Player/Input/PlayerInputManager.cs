@@ -15,6 +15,7 @@ namespace Player.Input
         public bool jump;
         public bool jumpCancel;
         public bool restart;
+        public bool pause;
         void Awake()
         {
             _playerActions = new PlayerInputAction();
@@ -26,6 +27,7 @@ namespace Player.Input
             _playerActions.Player.Jump.canceled += CancelJump;
             _playerActions.Player.Restart.performed += Restart;
             _playerActions.Player.Restart.canceled += CancelRestart;
+            _playerActions.Player.Pause.performed += Pause;
         }
 
     
@@ -47,6 +49,11 @@ namespace Player.Input
         void LeftClick(InputAction.CallbackContext context)
         {
             leftClick = true;
+        }
+
+        void Pause(InputAction.CallbackContext context)
+        {
+            pause = true;
         }
         void Restart(InputAction.CallbackContext context)
         {

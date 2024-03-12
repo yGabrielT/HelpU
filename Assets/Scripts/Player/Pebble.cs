@@ -23,7 +23,7 @@ public class Pebble : MonoBehaviour, IInterectable
                     Instantiate(_playerController.smokeParticle.gameObject, transform.position , Quaternion.identity);
                 });
         }
-        wasInteracted = false;
+        Invoke(nameof(restoreInteract), .5f);
     }
 
     // Start is called before the first frame update
@@ -37,6 +37,11 @@ public class Pebble : MonoBehaviour, IInterectable
     void Update()
     {
 
+    }
+
+    void restoreInteract()
+    {
+        wasInteracted = false;
     }
 
 }

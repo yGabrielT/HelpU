@@ -14,7 +14,7 @@ namespace Player
         [Header("Camera/Mouse")]
         [SerializeField] private GameObject _cam;
         [SerializeField] private GameObject _interactUI;
-        [SerializeField] private float _sensivity;
+        [SerializeField] public float sensivity;
         [SerializeField] private float _zRotateControl;
         [SerializeField] private float _zRotateSmooth;
         [SerializeField] private float _smoothLerpMouseValue;
@@ -49,7 +49,7 @@ namespace Player
         [SerializeField] Image _panelImage;
         [HideInInspector] public bool isHanging;
         [HideInInspector] public PlayerInputManager playerInput;
-        public bool canMove = true;
+        public bool canControl = true;
 
         private Vector2 _rawMouseVector;
         private Vector2 _smoothMouseVector;
@@ -90,7 +90,7 @@ namespace Player
 
         void Start()
         {
-            canMove = true;
+            
             canCheckPoint = true;
             _stamina = _maxStamina;
             canClimb = true;
@@ -108,19 +108,23 @@ namespace Player
 
         void Update()
         {
-            HandleCheckpoint();
             
-            Rotate();
-            Interact();
-            HandleJump();
-            if (!isHanging)
+            if (canControl)
             {
-                MovePlayer();
+                HandleCheckpoint();
+                Rotate();
+                Interact();
+                HandleJump();
+                if (!isHanging)
+                {
+                    MovePlayer();
+                }
+                Slope();
+                HandleNoise();
+                Stamina();
+                ChooseRandomFootStep();
             }
-            Slope();
-            HandleNoise();
-            Stamina();
-            ChooseRandomFootStep();
+            
             
             
         }
@@ -224,7 +228,7 @@ namespace Player
         void Rotate()
         {
             
-            _rawMouseVector = new Vector2(playerInput.mouseDelta.x * _sensivity, playerInput.mouseDelta.y * _sensivity);
+            _rawMouseVector = new Vector2(playerInput.mouseDelta.x * sensivity, playerInput.mouseDelta.y * sensivity);
             _smoothMouseVector = Vector2.Lerp(_smoothMouseVector, _rawMouseVector, Time.deltaTime * _smoothLerpMouseValue);
             _finalMouseVector += _smoothMouseVector;
             _finalMouseVector.y = Mathf.Clamp(_finalMouseVector.y, _topClampValue, _bottomClampValue);
