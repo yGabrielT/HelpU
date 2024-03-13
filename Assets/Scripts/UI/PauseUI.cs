@@ -151,8 +151,8 @@ public class PauseUI : MonoBehaviour
         Cursor.visible = true;
         canOpenMenu = false;
         _endCanvas.gameObject.SetActive(true);
-        _endCanvas.DOFade(1f, .6f).SetUpdate(true);
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, .5f).SetEase(Ease.OutExpo).SetUpdate(true);
+        _endCanvas.DOFade(1f, 2f).SetUpdate(true);
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 1.5f).SetEase(Ease.OutExpo).SetUpdate(true);
     }
 
     public void StartGame()
