@@ -89,7 +89,11 @@ public class PauseUI : MonoBehaviour
 
     public void Resume()
     {
-        _playerController.canControl = true;
+        if (!_playerController.isInCutscene)
+        {
+            _playerController.canControl = true;
+        }
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1f;

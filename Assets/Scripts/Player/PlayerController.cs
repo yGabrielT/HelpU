@@ -86,6 +86,8 @@ namespace Player
         public AudioClip grabPeebleSound;
         private bool wasOnAir;
         public GameObject smokeParticle;
+        
+        public bool isInCutscene;
 
 
         void Start()
@@ -390,7 +392,7 @@ namespace Player
                 
                 var collider = sphereHit.collider;
                 var angle = Vector3.Angle(Vector3.up, sphereHit.normal);
-                Debug.DrawLine(sphereHit.point,sphereHit.point + sphereHit.normal, Color.blue,3f);
+
                 
                 if (angle > _char.slopeLimit)
                 {
@@ -434,24 +436,36 @@ namespace Player
 
             if ( _lastCheckPoint != null && canCheckPoint && playerInput.restart)
             {
-                timerChecker = _maxCheckTimer;
-                canCheckPoint = false;
-                playerInput.restart = false;
-                
-                _panelImage.DOFade(1f, .5f).SetEase(Ease.InOutCirc).OnComplete(()=> 
-                {
-                    _char.enabled = false;
-                    transform.position = _lastCheckPoint;
-                    _char.enabled = true;
-                    _panelImage.DOFade(0f, .5f).SetEase(Ease.InOutCirc);
-                }
-                );
-                
-                
+
+
+                GoToCheckpoint();
                 
                 
                 
             }
+        }
+
+        public void GoToCheckpoint()
+        {
+
+            timerChecker = _maxCheckTimer;
+            canCheckPoint = false;
+            playerInput.restart = false;
+
+            _panelImage.DOFade(1f, .5f).SetEase(Ease.InOutCirc).OnComplete(() =>
+            {
+                _char.enabled = false;
+                transform.position = _lastCheckPoint;
+                _char.enabled = true;
+                _panelImage.DOFade(0f, .5f).SetEase(Ease.InOutCirc);
+            }
+            );
+        }
+
+        public void ManageControl(bool isControlling)
+        {
+            canControl = isControlling;
+            isInCutscene = !isControlling;
         }
 
 

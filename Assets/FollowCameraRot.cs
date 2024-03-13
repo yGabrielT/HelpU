@@ -12,5 +12,6 @@ public class FollowCameraRot : MonoBehaviour
     void Update()
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, camHolder.transform.rotation, lightSmoothFollow * Time.deltaTime);
+        transform.position = camHolder.transform.position;
     }
 }
