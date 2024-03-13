@@ -53,8 +53,8 @@ public class ChangeOxygenUi : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        CanvasGroupOxygen.gameObject.SetActive(false);
-        CanvasGroupOxygen.DOFade(0f, 0.2f).SetUpdate(true);
+        
+        CanvasGroupOxygen.DOFade(0f, 0.2f).SetUpdate(true).SetDelay(.2f).OnComplete(() => CanvasGroupOxygen.gameObject.SetActive(false));
         Time.timeScale = 1f;
         _player._lastCheckPoint = new Vector3(-62.43f, 4.03f, -38.22f);
         _player.GoToCheckpoint();

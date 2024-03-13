@@ -37,6 +37,9 @@ public class PauseUI : MonoBehaviour
     private TextMeshProUGUI _sfxVolText;
     [SerializeField]
     private TextMeshProUGUI _ambientVolText;
+
+    [SerializeField]
+    private CanvasGroup _endCanvas;
     
     void Start()
     {
@@ -132,5 +135,14 @@ public class PauseUI : MonoBehaviour
         _masterVolText.text = _masterVolSlide.value.ToString("0");
         _sfxVolText.text = _sfxVolSlide.value.ToString("0");
         _ambientVolText.text = _ambientVolSlide.value.ToString("0");
+    }
+
+    public void EndGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+        _endCanvas.gameObject.SetActive(true);
+        _endCanvas.DOFade(0f, .6f).SetUpdate(true).SetDelay(.4f);
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 1f).SetEase(Ease.OutExpo).SetUpdate(true);
     }
 }
