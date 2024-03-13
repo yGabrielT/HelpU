@@ -74,7 +74,7 @@ namespace Player
         public float _groundTimer;
         private bool _isGroundTimerDone;
         private bool isSliding;
-        private Vector3 _lastCheckPoint;
+        public Vector3 _lastCheckPoint;
         bool canCheckPoint = true;
         private float timerChecker;
         [SerializeField] private TextMeshProUGUI _checkpointText;
@@ -84,8 +84,9 @@ namespace Player
         private float _stepDelay = .2f;
         private float _stepTimer;
         public AudioClip grabPeebleSound;
-        private bool wasOnAir;
+        
         public GameObject smokeParticle;
+        public bool canRestart;
         
         public bool isInCutscene;
 
@@ -423,31 +424,34 @@ namespace Player
 
         public void HandleCheckpoint()
         {
+            if (canRestart)
+            {
+                if (timerChecker > 0)
+                {
+                    timerChecker -= Time.deltaTime;
+
+                }
+                else
+                {
+                    canCheckPoint = true;
+                }
+
+                if (_lastCheckPoint != null && canCheckPoint && playerInput.restart)
+                {
+
+
+                    GoToCheckpoint();
+
+
+
+                }
+            }
             
-            if (timerChecker > 0)
-            {
-                timerChecker -= Time.deltaTime;
-                
-            }
-            else
-            {
-                canCheckPoint = true;
-            }
-
-            if ( _lastCheckPoint != null && canCheckPoint && playerInput.restart)
-            {
-
-
-                GoToCheckpoint();
-                
-                
-                
-            }
         }
 
         public void GoToCheckpoint()
         {
-
+            canRestart = true;
             timerChecker = _maxCheckTimer;
             canCheckPoint = false;
             playerInput.restart = false;
@@ -461,6 +465,8 @@ namespace Player
             }
             );
         }
+
+        
 
         public void ManageControl(bool isControlling)
         {
