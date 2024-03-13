@@ -18,6 +18,7 @@ namespace Player.Input
         public bool pause;
         void Awake()
         {
+            
             _playerActions = new PlayerInputAction();
             _playerActions.Player.Enable();
             _playerActions.Player.MouseDelta.performed += MouseDelta;

@@ -6,6 +6,8 @@ using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine;
+using UnityEngine.Playables;
 
 public class PauseUI : MonoBehaviour
 {
@@ -40,9 +42,15 @@ public class PauseUI : MonoBehaviour
 
     [SerializeField]
     private CanvasGroup _endCanvas;
+
+    public CinemachineVirtualCamera _mainMenuVCam;
+    public PlayableDirector _dir;
+    private bool canOpenMenu = false;
+    public CanvasGroup _canvasMainMenu;
     
     void Start()
     {
+        canOpenMenu = false;
         canAct = true;
         _pauseUICanvas = GetComponent<CanvasGroup>();
         _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -54,11 +62,11 @@ public class PauseUI : MonoBehaviour
         if (_playerController.playerInput.pause)
         {
             _playerController.playerInput.pause = false;
-            if (!isPaused && canAct)
+            if (!isPaused && canAct && canOpenMenu)
             {
                 Pause();
             }
-            if(isPaused && canAct)
+            if(isPaused && canAct && canOpenMenu)
             {
                 Resume();
             }
@@ -140,9 +148,23 @@ public class PauseUI : MonoBehaviour
     public void EndGame()
     {
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = false;
+        Cursor.visible = true;
+        canOpenMenu = false;
         _endCanvas.gameObject.SetActive(true);
-        _endCanvas.DOFade(0f, .6f).SetUpdate(true).SetDelay(.4f);
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 1f).SetEase(Ease.OutExpo).SetUpdate(true);
+        _endCanvas.DOFade(1f, .6f).SetUpdate(true);
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, .5f).SetEase(Ease.OutExpo).SetUpdate(true);
     }
+
+    public void StartGame()
+    {
+        _canvasMainMenu.DOFade(0f, .2f);
+        _canvasMainMenu.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        canOpenMenu = true;
+        _mainMenuVCam.Priority = -1;
+        _dir.Play();
+
+    }
+
 }

@@ -20,7 +20,6 @@ namespace Player
         [SerializeField] private float _smoothLerpMouseValue;
         [SerializeField] private float _topClampValue;
         [SerializeField] private float _bottomClampValue;
-        [SerializeField] private bool _isCursorLocked;
 
         [Header("Noise values")]
         [SerializeField] private float _walkNoiseFrequency;
@@ -90,7 +89,6 @@ namespace Player
         
         public bool isInCutscene;
 
-
         void Start()
         {
             
@@ -98,11 +96,6 @@ namespace Player
             _stamina = _maxStamina;
             canClimb = true;
             _vCam = _cam.GetComponentInChildren<CinemachineVirtualCamera>();
-            if (_isCursorLocked)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
             playerInput = GetComponent<PlayerInputManager>();
 
             _char = GetComponent<CharacterController>();
