@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Player;
-using static UnityEditor.Experimental.GraphView.GraphView;
 public class ChangeOxygenUi : MonoBehaviour
 {
     public TextMeshProUGUI OxygenTextUI;
