@@ -1,59 +1,9 @@
 fileFormatVersion: 2
-guid: bfb3554dbd3f1c04d8444808e5c972c5
+guid: 2725d3a6b96092740bd5a08133762f45
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Back.002
-    second: {fileID: 2100000, guid: 06cca56dfb05d074ba4095ce36e78e40, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Blusa.004
-    second: {fileID: 2100000, guid: 0e72c48e324e2c24aaa2f65e388cd897, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bota.003
-    second: {fileID: 2100000, guid: fd12a2eb9c308f441b90d3a88fa61ac2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bottom.002
-    second: {fileID: 2100000, guid: a612f22cf7358a245a9ef3c08863747c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Corpo.002
-    second: {fileID: 2100000, guid: 01a9f20b37d6cbe48be135c9ffa02254, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Front.002
-    second: {fileID: 2100000, guid: d26d25548f987fc47955fd57f506ec9a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mid.002
-    second: {fileID: 2100000, guid: 86b0b80a5f7d89741a9dc496086367e3, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Screen Cover.002
-    second: {fileID: 2100000, guid: 9430e05bfb6adc546a393371546c3bda, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Top.002
-    second: {fileID: 2100000, guid: df7ac61f87f8ee442ad59502d2763c09, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: calca.002
-    second: {fileID: 2100000, guid: 9d49fee2c6c86c943b49ff88d5a5c8e5, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -340,11 +290,12 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: bfb3554dbd3f1c04d8444808e5c972c5,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
