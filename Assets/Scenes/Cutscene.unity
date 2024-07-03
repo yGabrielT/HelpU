@@ -27097,13 +27097,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cam: {fileID: 655372201}
   _interactUI: {fileID: 1043199525}
-  _sensivity: 0.1
+  sensivity: 0
   _zRotateControl: 2
   _zRotateSmooth: 10
   _smoothLerpMouseValue: 200
   _topClampValue: -90
   _bottomClampValue: 90
-  _isCursorLocked: 1
   _walkNoiseFrequency: 0.8
   _walkNoiseAmplitude: 0.8
   _idleNoiseFrequency: 0.3
@@ -27132,16 +27131,19 @@ MonoBehaviour:
   _panelImage: {fileID: 646435349}
   isHanging: 0
   playerInput: {fileID: 2070288091}
-  canMove: 1
+  canControl: 1
   _stamina: 0
   canClimb: 0
   _groundTimer: 0
+  _lastCheckPoint: {x: 0, y: 0, z: 0}
   _checkpointText: {fileID: 79335942}
   _footStepClip: {fileID: 8300000, guid: 8c09d092135bd034c966a8cd0eb295e1, type: 3}
   _stepDelay: 0.2
   grabPeebleSound: {fileID: 8300000, guid: 7c4be5cc9155358489ab38129fa490c7, type: 3}
   smokeParticle: {fileID: 4330871159411587299, guid: dfeafd33b4215a642aa4b75013011cbd,
     type: 3}
+  canRestart: 0
+  isInCutscene: 0
 --- !u!114 &2070288091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27160,6 +27162,7 @@ MonoBehaviour:
   jump: 0
   jumpCancel: 0
   restart: 0
+  pause: 0
 --- !u!143 &2070288092
 CharacterController:
   m_ObjectHideFlags: 0
@@ -27214,8 +27217,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OxygenTextUI: {fileID: 1286808662}
   OxygenGraphicUI: {fileID: 1046461583}
+  CanvasGroupOxygen: {fileID: 0}
   OxygenGraphicHolderUI: {fileID: 606093117}
   oxygenTimerDivider: 2
+  oxygenAmount: 0
+  isLosingOxygen: 0
 --- !u!1001 &2076375646
 PrefabInstance:
   m_ObjectHideFlags: 0
