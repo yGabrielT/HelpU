@@ -82,6 +82,7 @@ public class PauseUI : MonoBehaviour
         {
             _mainPanelCanvas.gameObject.SetActive(false);
             _optionCanvas.gameObject.SetActive(true);
+            _optionCanvas.ignoreParentGroups = true;
             _optionCanvas.DOFade(1f, 0.2f).SetUpdate(true).OnComplete(() => _optionCanvas.interactable = true);
             
         });
@@ -90,10 +91,12 @@ public class PauseUI : MonoBehaviour
     public void ReturnToMainPanel()
     {
         _optionCanvas.interactable = false;
+        _optionCanvas.ignoreParentGroups = false;
         _optionCanvas.DOFade(0f, 0.2f).SetUpdate(true).OnComplete(() => 
         {
             _optionCanvas.gameObject.SetActive(false);
             _mainPanelCanvas.gameObject.SetActive(true);
+            
             _mainPanelCanvas.DOFade(1f, 0.2f).SetUpdate(true).OnComplete(() => _mainPanelCanvas.interactable = true);
         });
     }
@@ -105,11 +108,21 @@ public class PauseUI : MonoBehaviour
             _playerController.canControl = true;
         }
         
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1f;
         isPaused = false;
         canAct = false;
+        if (_optionCanvas.gameObject.activeSelf == true)
+        {
+            _optionCanvas.interactable = false;
+            _optionCanvas.ignoreParentGroups = false;
+            _optionCanvas.gameObject.SetActive(false);
+            _mainPanelCanvas.gameObject.SetActive(true);
+            _mainPanelCanvas.alpha = 1f;
+            _mainPanelCanvas.interactable = true;
+        }
         _playerController.playerInput.pause = false;
         _mainPanelCanvas.gameObject.SetActive(false);
         _pauseUICanvas.DOFade(0f, .2f).SetUpdate(true).OnComplete(() => canAct = true);
@@ -120,7 +133,7 @@ public class PauseUI : MonoBehaviour
         _playerController.canControl = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         isPaused = true;
         canAct = false;
         _pauseUICanvas.DOFade(1f, .2f).SetUpdate(true).OnComplete(() => { canAct = true; _pauseUICanvas.interactable = true; });

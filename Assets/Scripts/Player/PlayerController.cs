@@ -111,10 +111,6 @@ namespace Player
                 Rotate();
                 Interact();
                 HandleJump();
-                if (!isHanging)
-                {
-                    MovePlayer();
-                }
                 Slope();
                 HandleNoise();
                 Stamina();
@@ -125,7 +121,15 @@ namespace Player
             
         }
 
-        
+        private void FixedUpdate()
+        {
+            if (!isHanging && canControl)
+            {
+                MovePlayer();
+            }
+        }
+
+
         void ChooseRandomFootStep()
         {
             if(_char.isGrounded && _rawMoveVector != Vector2.zero && !isHanging)
